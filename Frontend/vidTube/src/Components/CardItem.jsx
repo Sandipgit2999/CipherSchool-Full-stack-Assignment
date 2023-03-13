@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import * as types from "../Redux/videos/videoactiontype";
 
 import {
   Card,
@@ -14,30 +16,36 @@ import {
   Image,
 } from "@chakra-ui/react";
 import Video from "../Pages/Video";
-const CardItem = ({ title, thumbnail, id }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
+const CardItem = ({ title, thumbnail, videoid, Id, index }) => {
 
-  const handleThumbnailClick = () => {
-    setIsPlaying(true);
-  };
+  const videos = useSelector((state) => state.reducer.videos);
+  const currVideo = useSelector((state) => state.reducer.currvid);
+  console.log(currVideo, "bidofdfj")
+  const dispatch = useDispatch();
+
+  const handleClick = () => {
+    dispatch({ type: types.GET_CURRVIDEO_SUCCESS, payload: videos[index] })
+  }
+
+
 
   return (
     <div>
-      <Link to={`/video/${id}`}>
-        <Card onClick={handleThumbnailClick}>
+      <Link to={`/video/${videoid}`}>
+        <Card backgroundColor={"white"} onClick={handleClick} >
           <CardBody>
             <Box boxSize="sm">
               <Image
-                src="https://i.ytimg.com/an_webp/EwSD4uCSX_M/mqdefault_6s.webp?du=3000&sqp=CK7LsaAG&rs=AOn4CLCh5WfildVniJzRWfPZk_loJLKuuw"
+                src={thumbnail}
                 alt="image not available"
               />
-              <Text size="md"> Hello</Text>
+              <Text size="md"> {title}</Text>
             </Box>
           </CardBody>
         </Card>
       </Link>
 
-      <Video isPlaying={isPlaying} />
+
     </div>
   );
 };
