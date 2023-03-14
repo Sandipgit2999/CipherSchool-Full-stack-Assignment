@@ -1,7 +1,5 @@
 const { Router } = require("express");
 
-const { arr } = require("../data");
-
 const { videoModel } = require("../models/videos.model");
 
 const videoController = Router();
@@ -12,7 +10,7 @@ videoController.get("/", async (req, res) => {
 });
 
 videoController.get("/:videoId", async (req, res) => {
-  const {videoId}=req.params;
+  const { videoId } = req.params;
   const todos = await videoModel.findOne({ _id: videoId });
   res.send(todos);
 });
