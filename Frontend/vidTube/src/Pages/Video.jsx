@@ -1,44 +1,33 @@
 import { Box, Text } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AiFillLike, AiOutlineLike } from "react-icons/ai"
 import Comments from "../Components/Comments";
+import { getcurrVideos } from "../Redux/videos/videoaction";
 import * as types from "../Redux/videos/videoactiontype"
 import axios from "axios";
 
 const Video = () => {
   const { id } = useParams();
   const currVideo = useSelector((state) => state.reducer.currvid);
-  console.log(currVideo, "currVidoe")
+
   const [like, setLike] = useState(false)
-  console.log(currVideo, like, "bidofdfj")
+
   const dispatch = useDispatch();
   let { _id, likecount } = currVideo;
-  console.log("dkkdk", _id)
 
 
-  const getVideos = () => {
-    axios.get(`http://localhost:8080/videos/${_id}`)
-      .then((res) => {
-        console.log(res);
-        dispatch({ type: types.GET_CURRVIDEO_SUCCESS, payload: res.data })
-      })
-      .catch((err) => {
-
-        console.log(err);
-      })
-  }
 
 
 
   const handleLike = (id, count) => {
-    console.log(id)
+    //console.log(id)
 
     axios.put(`http://localhost:8080/videos/${id}`, { likecount: likecount + count })
       .then((res) => {
-        console.log(res);
-        getVideos()
+        //console.log(res);
+        dispatch(getcurrVideos(id))
         setLike(!like)
       })
       .catch((err) => {
@@ -47,6 +36,11 @@ const Video = () => {
       })
 
   }
+
+
+  useEffect(() => {
+    dispatch(getcurrVideos(_id))
+  }, [])
 
 
   return (

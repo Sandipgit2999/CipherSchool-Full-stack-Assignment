@@ -22,3 +22,17 @@ export const getVideos = () => async (dispatch) => {
 //       })
 //       .catch(() => dispatch({ type: types.GET_CARDS_FAILURE }));
 //   };
+
+export const getcurrVideos = (_id) => async (dispatch) => {
+
+  console.log(_id,"didkdk")
+  return axios
+    .get(`http://localhost:8080/videos/${_id}`)
+    .then((res) => {
+      //console.log(res);
+      dispatch({ type: types.GET_CURRVIDEO_SUCCESS, payload: res.data });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
